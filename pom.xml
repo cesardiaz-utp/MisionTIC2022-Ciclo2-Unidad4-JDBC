@@ -5,12 +5,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>co.edu.utp.misiontic2022.c2.cdiaz</groupId>
-  <artifactId>clase11</artifactId>
+  <artifactId>Empleados-JDBC</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>clase11</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <name>Gestión de Empleados</name>
+  <url>http://misiontic2022.utp.edu.co</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
