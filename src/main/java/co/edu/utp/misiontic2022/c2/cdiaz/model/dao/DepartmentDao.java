@@ -15,10 +15,9 @@ public class DepartmentDao {
             var statement = connection.prepareStatement("select * from departments");
             var rset = statement.executeQuery();
             while (rset.next()) {
-                int i = 0;
                 var department = new Department();
-                department.setId(rset.getInt(i++));
-                department.setName(rset.getString(i++));
+                department.setId(rset.getInt("ID"));
+                department.setName(rset.getString("NAME"));
                 response.add(department);
             }
         }
@@ -34,9 +33,8 @@ public class DepartmentDao {
             var rset = statement.executeQuery();
             if (rset.next()) {
                 response = new Department();
-                int i = 1;
-                response.setId(rset.getInt(i++));
-                response.setName(rset.getString(i++));
+                response.setId(rset.getInt("ID"));
+                response.setName(rset.getString("NAME"));
             }
         }
         return response;

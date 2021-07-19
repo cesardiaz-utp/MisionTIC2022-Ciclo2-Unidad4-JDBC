@@ -68,6 +68,7 @@ public class EmployeeDao {
         try {
             connection = JDBCUtilities.getConnection();
             if (employee.getId() == null) {
+                employee.setId(generarConsecutivo());
                 var statement = connection.prepareStatement("insert into employees values (?, ?, ?, ?)");
                 statement.setInt(1, employee.getId());
                 statement.setString(2, employee.getName());
@@ -76,7 +77,8 @@ public class EmployeeDao {
 
                 statement.execute();
             } else {
-                var statement = connection.prepareStatement("update employees set name = ?, email = ?, department_id = ? where id = ?");
+                var statement = connection
+                        .prepareStatement("update employees set name = ?, email = ?, department_id = ? where id = ?");
                 statement.setString(1, employee.getName());
                 statement.setString(2, employee.getEmail());
                 statement.setInt(3, employee.getDepartment().getId());
@@ -112,4 +114,23 @@ public class EmployeeDao {
         }
         return employee;
     }
+
+    private Integer generarConsecutivo() throws SQLException {
+        Integer consecutivo = 1;
+        Connection connection = null;
+        try {
+            connection = JDBCUtilities.getConnection();
+            var statement = connection.prepareStatement("select max(id) as consecutivo from employees");
+            var rset = statement.executeQuery();
+            if (rset.next()) {
+                consecutivo = rset.getInt("consecutivo") + 1;
+            }
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+        return consecutivo;
+    }
+
 }

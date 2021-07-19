@@ -13,6 +13,12 @@ public class Employee {
         this.name = name;
     }
 
+    public Employee(String name, String email, Department department) {
+        this.name = name;
+        this.email = email;
+        this.department = department;
+    }
+
     public Employee(Integer id, String name, String email, Department department) {
         this.id = id;
         this.name = name;
