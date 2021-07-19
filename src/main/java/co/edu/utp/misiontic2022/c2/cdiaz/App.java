@@ -3,6 +3,7 @@ package co.edu.utp.misiontic2022.c2.cdiaz;
 import java.sql.SQLException;
 
 import co.edu.utp.misiontic2022.c2.cdiaz.util.JDBCUtilities;
+import co.edu.utp.misiontic2022.c2.cdiaz.view.MainMenu;
 
 /**
  * Hello world!
@@ -15,13 +16,11 @@ public class App {
                 JDBCUtilities.initDatabase(connection);
             }
 
-            
+            MainMenu.start();
 
         } catch (SQLException e) {
             System.err.println("Error en conexion a base de datos: " + e);
         }
     }
-
-
 
 }

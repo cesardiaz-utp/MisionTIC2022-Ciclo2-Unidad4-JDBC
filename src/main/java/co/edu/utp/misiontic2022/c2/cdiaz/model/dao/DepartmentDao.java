@@ -11,9 +11,10 @@ public class DepartmentDao {
 
     public List<Department> findAll() throws SQLException {
         var response = new ArrayList<Department>();
-        try (var connection = JDBCUtilities.getConnection()) {
-            var statement = connection.prepareStatement("select * from departments");
-            var rset = statement.executeQuery();
+        try (var connection = JDBCUtilities.getConnection();
+                var statement = connection.prepareStatement("select * from departments");
+                var rset = statement.executeQuery()) {
+
             while (rset.next()) {
                 var department = new Department();
                 department.setId(rset.getInt("ID"));
@@ -26,15 +27,16 @@ public class DepartmentDao {
 
     public Department findById(Integer id) throws SQLException {
         Department response = null;
-        try (var connection = JDBCUtilities.getConnection()) {
-            var statement = connection.prepareStatement("select * from departments where id = ?");
+        try (var connection = JDBCUtilities.getConnection();
+                var statement = connection.prepareStatement("select * from departments where id = ?")) {
             statement.setInt(1, id);
-            
-            var rset = statement.executeQuery();
-            if (rset.next()) {
-                response = new Department();
-                response.setId(rset.getInt("ID"));
-                response.setName(rset.getString("NAME"));
+
+            try (var rset = statement.executeQuery()) {
+                if (rset.next()) {
+                    response = new Department();
+                    response.setId(rset.getInt("ID"));
+                    response.setName(rset.getString("NAME"));
+                }
             }
         }
         return response;

@@ -1,6 +1,7 @@
 package co.edu.utp.misiontic2022.c2.cdiaz.model.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,8 @@ public class EmployeeDao {
                 employee.setDepartment(departmentDao.findById(rset.getInt(4)));
                 response.add(employee);
             }
+            rset.close();
+            statement.close();
         } finally {
             if (connection != null) {
                 connection.close();
@@ -55,6 +58,8 @@ public class EmployeeDao {
                 response.setEmail(rset.getString(3));
                 response.setDepartment(departmentDao.findById(rset.getInt(4)));
             }
+            rset.close();
+            statement.close();
         } finally {
             if (connection != null) {
                 connection.close();
@@ -65,28 +70,31 @@ public class EmployeeDao {
 
     public Employee save(Employee employee) throws SQLException {
         Connection connection = null;
+        PreparedStatement statement = null; 
         try {
             connection = JDBCUtilities.getConnection();
             if (employee.getId() == null) {
                 employee.setId(generarConsecutivo());
-                var statement = connection.prepareStatement("insert into employees values (?, ?, ?, ?)");
+                
+                statement = connection.prepareStatement("insert into employees values (?, ?, ?, ?)");
                 statement.setInt(1, employee.getId());
                 statement.setString(2, employee.getName());
                 statement.setString(3, employee.getEmail());
                 statement.setInt(4, employee.getDepartment().getId());
 
-                statement.execute();
+                statement.executeUpdate();
             } else {
-                var statement = connection
+                
+                statement = connection
                         .prepareStatement("update employees set name = ?, email = ?, department_id = ? where id = ?");
                 statement.setString(1, employee.getName());
                 statement.setString(2, employee.getEmail());
                 statement.setInt(3, employee.getDepartment().getId());
                 statement.setInt(4, employee.getId());
 
-                statement.execute();
+                statement.executeUpdate();
             }
-
+            statement.close();
         } finally {
             if (connection != null) {
                 connection.close();
@@ -106,7 +114,8 @@ public class EmployeeDao {
             connection = JDBCUtilities.getConnection();
             var statement = connection.prepareStatement("delete from employees where id = ?");
             statement.setInt(1, id);
-            statement.execute();
+            statement.executeUpdate();
+            statement.close();
         } finally {
             if (connection != null) {
                 connection.close();
@@ -125,6 +134,8 @@ public class EmployeeDao {
             if (rset.next()) {
                 consecutivo = rset.getInt("consecutivo") + 1;
             }
+            rset.close();
+            statement.close();
         } finally {
             if (connection != null) {
                 connection.close();
